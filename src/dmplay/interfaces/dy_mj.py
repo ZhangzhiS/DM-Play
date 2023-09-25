@@ -271,6 +271,12 @@ class DYMJWindow(WindowBase):
         if new_list and self.task_status is False:
             self.start_generate_task(new_list[0])
             new_list.pop(0)
+        elif not new_list:
+            self.start_generate_task({
+                "nickname": "系统随机",
+                "user_id": "0",
+                "prompt": ""
+            })
             # self.set_next_generate_ui()
         # elif new_list and self.task_status:
         self.rank_list = new_list
