@@ -8,7 +8,8 @@ from dmplay.core.config import config, save_config_to_json
 from dmplay.core.window_base import WindowBase
 from dmplay.core.windows_manager import window_manager
 
-BACKEND_DOMAIN = "127.0.0.1:8081"
+# BACKEND_DOMAIN = "127.0.0.1:8081"
+BACKEND_DOMAIN = "hello.zzs7.top"
 
 
 class LoginSignal(QObject):
