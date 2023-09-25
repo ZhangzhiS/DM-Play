@@ -4,7 +4,7 @@ import requests
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
-from dmplay.core.config import config
+from dmplay.core.config import config, save_config_to_json
 
 
 class DownLoadSignal(QObject):
@@ -25,6 +25,9 @@ class DownloadThread(QRunnable):
         res = self.download()
         if res:
             if self.task_status == 1:
+                if not config.DOWNLOAD_PATH:
+                    config.DOWNLOAD_PATH = os.path.expanduser("\\Pictures")
+                    save_config_to_json(config)
                 save_path = os.path.join(config.DOWNLOAD_PATH, f"{self.filename}.png")
                 logger.info(save_path)
                 with open(save_path, "wb") as f:
