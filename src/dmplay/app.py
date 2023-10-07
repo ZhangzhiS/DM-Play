@@ -30,8 +30,8 @@ def main():
     QtWidgets.QApplication.setApplicationName(metadata["Formal-Name"])
 
     app = QtWidgets.QApplication(sys.argv)
-    l = LoginWindow()
-    h = HomeWindow()
-    d = DYMJWindow()
-    s = SettingsWindow()
+    login = LoginWindow()  # noqa
+    home = HomeWindow()  # noqa
+    dymj = DYMJWindow()  # noqa
+    settings = SettingsWindow()  # noqa
     sys.exit(app.exec())
