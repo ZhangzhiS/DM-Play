@@ -1,7 +1,7 @@
 import os
 import json
 import shutil
-from typing import Optional
+from typing import List, Optional
 from loguru import logger
 from pydantic import BaseModel
 
@@ -17,6 +17,7 @@ class Config(BaseModel):
     SYS_USER_ID: Optional[int]
     AVATAR_URL: Optional[str]
     DOWNLOAD_PATH: str
+    PART_RULE: List[str]
 
 
 def load_config_from_json():

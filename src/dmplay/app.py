@@ -34,4 +34,5 @@ def main():
     home = HomeWindow()  # noqa
     dymj = DYMJWindow()  # noqa
     settings = SettingsWindow()  # noqa
+    # dymj.show()
     sys.exit(app.exec())

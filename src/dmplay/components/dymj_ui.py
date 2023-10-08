@@ -8,14 +8,23 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt
-from PySide6.QtGui import QFont, QIcon
+from PySide6.QtCore import (
+    QCoreApplication,
+    QMetaObject,
+    QRect,
+    QSize,
+    Qt,
+)
+from PySide6.QtGui import (
+    QFont,
+    QIcon,
+)
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLCDNumber,
     QLabel,
+    QLineEdit,
     QListWidget,
-    QListWidgetItem,
     QProgressBar,
     QPushButton,
     QSizePolicy,
@@ -31,10 +40,10 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName("Form")
-        Form.resize(1267, 892)
+        Form.resize(1459, 893)
         self.main = QWidget(Form)
         self.main.setObjectName("main")
-        self.main.setGeometry(QRect(12, 12, 1243, 868))
+        self.main.setGeometry(QRect(12, 12, 1441, 868))
         self.main.setMinimumSize(QSize(1243, 868))
         self.main.setStyleSheet(
             "#main{\n"
@@ -426,9 +435,6 @@ class Ui_Form(object):
         self.verticalLayout_11 = QVBoxLayout()
         self.verticalLayout_11.setObjectName("verticalLayout_11")
         self.partRule = QListWidget(self.widget_9)
-        QListWidgetItem(self.partRule)
-        QListWidgetItem(self.partRule)
-        QListWidgetItem(self.partRule)
         self.partRule.setObjectName("partRule")
         self.partRule.setStyleSheet("#partRule {\n" "line-height: 30px;\n" "}")
         self.partRule.setWordWrap(True)
@@ -438,6 +444,33 @@ class Ui_Form(object):
         self.verticalLayout_12.addLayout(self.verticalLayout_11)
 
         self.verticalLayout_13.addWidget(self.widget_9)
+
+        self.widget_8 = QWidget(self.rule)
+        self.widget_8.setObjectName("widget_8")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.widget_8.sizePolicy().hasHeightForWidth())
+        self.widget_8.setSizePolicy(sizePolicy5)
+        self.horizontalLayout_20 = QHBoxLayout(self.widget_8)
+        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
+        self.horizontalLayout_19 = QHBoxLayout()
+        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
+        self.lineEdit = QLineEdit(self.widget_8)
+        self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.setStyleSheet("border: 1px solid gray;")
+
+        self.horizontalLayout_19.addWidget(self.lineEdit)
+
+        self.pushButton = QPushButton(self.widget_8)
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton.setStyleSheet("border: 1px solid gray;")
+
+        self.horizontalLayout_19.addWidget(self.pushButton)
+
+        self.horizontalLayout_20.addLayout(self.horizontalLayout_19)
+
+        self.verticalLayout_13.addWidget(self.widget_8)
 
         self.verticalLayout_14.addLayout(self.verticalLayout_13)
 
@@ -449,13 +482,13 @@ class Ui_Form(object):
 
         self.centerContainer = QWidget(self.mainContainer)
         self.centerContainer.setObjectName("centerContainer")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy5.setHorizontalStretch(4)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(
+        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy6.setHorizontalStretch(4)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(
             self.centerContainer.sizePolicy().hasHeightForWidth()
         )
-        self.centerContainer.setSizePolicy(sizePolicy5)
+        self.centerContainer.setSizePolicy(sizePolicy6)
         self.centerContainer.setStyleSheet("")
         self.verticalLayout_6 = QVBoxLayout(self.centerContainer)
         self.verticalLayout_6.setSpacing(3)
@@ -469,15 +502,15 @@ class Ui_Form(object):
         self.verticalLayout_15.setContentsMargins(-1, -1, -1, 0)
         self.imagePreview = QWidget(self.centerContainer)
         self.imagePreview.setObjectName("imagePreview")
-        sizePolicy6 = QSizePolicy(
+        sizePolicy7 = QSizePolicy(
             QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
         )
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(5)
-        sizePolicy6.setHeightForWidth(
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(5)
+        sizePolicy7.setHeightForWidth(
             self.imagePreview.sizePolicy().hasHeightForWidth()
         )
-        self.imagePreview.setSizePolicy(sizePolicy6)
+        self.imagePreview.setSizePolicy(sizePolicy7)
         self.imagePreview.setMinimumSize(QSize(0, 0))
         self.imagePreview.setMaximumSize(QSize(16777215, 16777215))
         self.imagePreview.setSizeIncrement(QSize(1, 1))
@@ -509,11 +542,11 @@ class Ui_Form(object):
 
         self.progressBar = QProgressBar(self.centerContainer)
         self.progressBar.setObjectName("progressBar")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(1)
-        sizePolicy7.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
-        self.progressBar.setSizePolicy(sizePolicy7)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(1)
+        sizePolicy8.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
+        self.progressBar.setSizePolicy(sizePolicy8)
         self.progressBar.setMinimumSize(QSize(547, 30))
         self.progressBar.setMaximumSize(QSize(16777215, 16777215))
         self.progressBar.setStyleSheet(
@@ -566,13 +599,13 @@ class Ui_Form(object):
 
         self.generateHistory = QWidget(self.mainContainer)
         self.generateHistory.setObjectName("generateHistory")
-        sizePolicy8 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy8.setHorizontalStretch(1)
-        sizePolicy8.setVerticalStretch(0)
-        sizePolicy8.setHeightForWidth(
+        sizePolicy9 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy9.setHorizontalStretch(1)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(
             self.generateHistory.sizePolicy().hasHeightForWidth()
         )
-        self.generateHistory.setSizePolicy(sizePolicy8)
+        self.generateHistory.setSizePolicy(sizePolicy9)
         self.generateHistory.setMinimumSize(QSize(0, 0))
         self.generateHistory.setStyleSheet(
             "#generateHistory{\n"
@@ -602,13 +635,13 @@ class Ui_Form(object):
 
         self.rightContainer = QWidget(self.mainContainer)
         self.rightContainer.setObjectName("rightContainer")
-        sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy9.setHorizontalStretch(2)
-        sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(
+        sizePolicy10 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy10.setHorizontalStretch(2)
+        sizePolicy10.setVerticalStretch(0)
+        sizePolicy10.setHeightForWidth(
             self.rightContainer.sizePolicy().hasHeightForWidth()
         )
-        self.rightContainer.setSizePolicy(sizePolicy9)
+        self.rightContainer.setSizePolicy(sizePolicy10)
         self.rightContainer.setMinimumSize(QSize(0, 0))
         self.rightContainer.setMaximumSize(QSize(16777215, 16777215))
         self.rightContainer.setStyleSheet(
@@ -649,13 +682,13 @@ class Ui_Form(object):
 
         self.footBar = QWidget(self.widget_4)
         self.footBar.setObjectName("footBar")
-        sizePolicy10 = QSizePolicy(
+        sizePolicy11 = QSizePolicy(
             QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
         )
-        sizePolicy10.setHorizontalStretch(0)
-        sizePolicy10.setVerticalStretch(4)
-        sizePolicy10.setHeightForWidth(self.footBar.sizePolicy().hasHeightForWidth())
-        self.footBar.setSizePolicy(sizePolicy10)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(4)
+        sizePolicy11.setHeightForWidth(self.footBar.sizePolicy().hasHeightForWidth())
+        self.footBar.setSizePolicy(sizePolicy11)
         self.footBar.setMinimumSize(QSize(0, 50))
         self.footBar.setMaximumSize(QSize(16777215, 50))
         self.footBar.setStyleSheet(
@@ -770,33 +803,12 @@ class Ui_Form(object):
         self.label_6.setText(
             QCoreApplication.translate("Form", "\u53c2\u4e0e\u89c4\u5219", None)
         )
-
-        __sortingEnabled = self.partRule.isSortingEnabled()
-        self.partRule.setSortingEnabled(False)
-        ___qlistwidgetitem = self.partRule.item(0)
-        ___qlistwidgetitem.setText(
-            QCoreApplication.translate(
-                "Form", "1. \u8fdb\u5165\u76f4\u64ad\u95f4", None
-            )
+        self.lineEdit.setPlaceholderText(
+            QCoreApplication.translate("Form", "\u8f93\u5165\u516c\u544a", None)
         )
-        ___qlistwidgetitem1 = self.partRule.item(1)
-        ___qlistwidgetitem1.setText(
-            QCoreApplication.translate(
-                "Form",
-                "2. \u6309\u7167\u7a97\u53e3\u4e0b\u9762\u7684\u63d0\u793a\uff0c\u53d1\u9001\u60f3\u8981\u751f\u6210\u7684\u56fe\u7247\u63d0\u793a\u8bcd",
-                None,
-            )
+        self.pushButton.setText(
+            QCoreApplication.translate("Form", "\u6dfb\u52a0", None)
         )
-        ___qlistwidgetitem2 = self.partRule.item(2)
-        ___qlistwidgetitem2.setText(
-            QCoreApplication.translate(
-                "Form",
-                "3. \u901a\u8fc7\u8d60\u9001\u793c\u7269\u589e\u52a0\u6392\u961f\u79ef\u5206,\u6392\u961f\u5217\u8868\uff0c\u53ea\u663e\u793a10\u4f4d",
-                None,
-            )
-        )
-        self.partRule.setSortingEnabled(__sortingEnabled)
-
         self.image.setText("")
         self.progressBar.setFormat(
             QCoreApplication.translate("Form", "\u5df2\u5b8c\u6210", None)

@@ -1,7 +1,11 @@
 from loguru import logger
-from PySide6.QtCore import QSize, Qt, QThreadPool, QTimer, Slot
-from PySide6.QtGui import QIcon, QPixmap
-from PySide6.QtWidgets import QLabel, QListWidgetItem
+from PySide6.QtCore import QEvent, QSize, Qt, QThreadPool, QTimer, Slot
+from PySide6.QtGui import QAction, QFont, QFontMetrics, QIcon, QPixmap
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QLabel,
+    QListWidgetItem,
+)
 
 from dmplay.components.dymj_ui import Ui_Form
 from dmplay.components.msg_box import MessageBox
@@ -45,6 +49,8 @@ class DYMJWindow(WindowBase):
         self.connect_button_timer = QTimer()
         self.connect_button_timer.timeout.connect(self.enable_connect_button)
 
+        self.ui.pushButton.clicked.connect(self.add_rule)
+
         self.msg_box_timer = QTimer()
 
         self.rank_list = []
@@ -56,6 +62,82 @@ class DYMJWindow(WindowBase):
         self.generate_task_id = None
         self.generate_progress = 0
         self.countdown_count = 0
+        self.rule_width = 1
+
+    def event(self, event):
+        if event.type() == QEvent.Show:
+            self.rule_width = self.ui.partRule.width()
+            self.init_rule()
+        return super().event(event)
+
+    def remove_selected_item(self):
+        selected_items = self.ui.partRule.selectedItems()
+        if not selected_items:
+            return
+        for item in selected_items:
+            item, index = item, self.ui.partRule.row(item)
+            self.ui.partRule.takeItem(index)
+            del item
+
+    def buile_rule_item(self, rule):
+        rule_label = QLabel()
+        rule_label.setText(rule)
+        rule_label.setWordWrap(True)
+        font = QFont()
+        font.setPixelSize(16)
+        rule_label.setFont(font)
+        s = QFontMetrics(rule_label.font())
+        item_line = (s.horizontalAdvance(rule_label.text())//self.rule_width)+1
+        item_height = (item_line+1)*s.height()
+        list_item = QListWidgetItem(self.ui.partRule)
+        list_item.setSizeHint(
+            QSize(
+                self.ui.partRule.width(),
+                item_height
+            )
+        )
+
+        self.ui.partRule.addItem(list_item)
+        self.ui.partRule.setItemWidget(list_item, rule_label)
+
+    def add_rule(self):
+        rule_label = QLabel()
+        rule_label.setText(self.ui.lineEdit.text())
+        rule_label.setWordWrap(True)
+        font = QFont()
+        font.setPixelSize(16)
+        rule_label.setFont(font)
+        list_item = QListWidgetItem(self.ui.partRule)
+        s = QFontMetrics(rule_label.font())
+        list_item.setSizeHint(
+                QSize(
+                    self.ui.partRule.width(),
+                    s.horizontalAdvance(rule_label.text())
+                    // self.rule_width
+                    * 20+20,
+                )
+            )
+        self.ui.partRule.addItem(list_item)
+        self.ui.partRule.setItemWidget(list_item, rule_label)
+        self.ui.lineEdit.clear()
+
+    def init_rule(self):
+        self.ui.partRule.setEditTriggers(
+            QAbstractItemView.EditTrigger.DoubleClicked
+            | QAbstractItemView.EditTrigger.SelectedClicked
+            | QAbstractItemView.EditTrigger.EditKeyPressed
+        )
+        self.ui.partRule.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
+        removeAction = QAction(
+            "Remove",
+            self.ui.partRule,
+        )
+        removeAction.triggered.connect(self.remove_selected_item)
+        self.ui.partRule.addAction(removeAction)
+        for rule in config.PART_RULE:
+            if not rule:
+                continue
+            self.buile_rule_item(rule)
 
     def custom_show(self):
         self.show()
@@ -272,11 +354,7 @@ class DYMJWindow(WindowBase):
             self.start_generate_task(new_list[0])
             new_list.pop(0)
         elif not new_list:
-            self.start_generate_task({
-                "nickname": "系统随机",
-                "user_id": "0",
-                "prompt": ""
-            })
+            self.start_generate_task({"nickname": "系统随机", "user_id": "0", "prompt": ""})
             # self.set_next_generate_ui()
         # elif new_list and self.task_status:
         self.rank_list = new_list
@@ -311,12 +389,6 @@ class DYMJWindow(WindowBase):
         if data.get("socia_count", -1) == -1:
             self.show_alt_msg("请先开启直播💋")
             self.close_websocket_worker()
-
-        # anchor_ava = data.get("live_room_anchor_ava", "")
-        # if anchor_ava:
-        #     download_thread = DownloadThread(anchor_ava)
-        #     download_thread.finished.connect(self.render_ava)
-        #     download_thread.start()
 
     def render_ava(self, content):
         """更新头像"""

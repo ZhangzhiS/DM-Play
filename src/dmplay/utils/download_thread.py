@@ -25,8 +25,11 @@ class DownloadThread(QRunnable):
         res = self.download()
         if res:
             if self.task_status == 1:
-                if not config.DOWNLOAD_PATH:
-                    config.DOWNLOAD_PATH = os.path.expanduser("\\Pictures")
+                if not config.DOWNLOAD_PATH or os.path.exists(config.DOWNLOAD_PATH):
+                    config.DOWNLOAD_PATH = os.path.join(
+                        os.path.expanduser("~"), "Pictures"
+                    )
+                    logger.info(config.DOWNLOAD_PATH)
                     save_config_to_json(config)
                 save_path = os.path.join(config.DOWNLOAD_PATH, f"{self.filename}.png")
                 logger.info(save_path)
