@@ -182,7 +182,7 @@ class DYMJWindow(WindowBase):
         # 启动子线程
         self.threadpool.start(self.worker)
 
-    def close_websocket_worker(self):
+    def close_websocket_worker(self, tips="已断开"):
         if self.worker:
             self.worker.close_websocket()
             self.threadpool.clear()
@@ -197,7 +197,7 @@ class DYMJWindow(WindowBase):
         icon = QIcon()
         icon.addFile(":/icons/icons/wifi-sharp-red.png", QSize())
         self.ui.connectButton.setIcon(icon)
-        self.ui.tips_content.setText("已断开")
+        self.ui.tips_content.setText(tips)
         self.ui.connectButton.setText("点击连接")
 
     def enable_connect_button(self):
@@ -350,7 +350,7 @@ class DYMJWindow(WindowBase):
 
     @Slot(list)
     def parse_refresh_rank_list(self, new_list: list):
-        if new_list and self.task_status is False:
+        if new_list and self.task_status is False and self.websocket_status:
             self.start_generate_task(new_list[0])
             new_list.pop(0)
         elif not new_list:
@@ -388,7 +388,7 @@ class DYMJWindow(WindowBase):
         self.ui.countNum.display(data.get("socia_count", -1))
         if data.get("socia_count", -1) == -1:
             self.show_alt_msg("请先开启直播💋")
-            self.close_websocket_worker()
+            self.close_websocket_worker(tips="未开始直播")
 
     def render_ava(self, content):
         """更新头像"""
