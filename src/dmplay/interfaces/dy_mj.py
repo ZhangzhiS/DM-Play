@@ -1,6 +1,6 @@
 from loguru import logger
 from PySide6.QtCore import QEvent, QSize, Qt, QThreadPool, QTimer, Slot
-from PySide6.QtGui import QAction, QFont, QFontMetrics, QGuiApplication, QIcon, QPixmap, QScreen
+from PySide6.QtGui import QAction, QFont, QGuiApplication, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QLabel,
@@ -30,14 +30,14 @@ class DYMJWindow(WindowBase):
         self.ui.topBar.mousePressEvent = self.on_mouse_press
         self.ui.topBar.mouseMoveEvent = self.on_mouse_move
         window_manager.show_dymj.connect(self.custom_show)
-        screen = QGuiApplication.primaryScreen().geometry()  # 获取屏幕类并调用geometry()方法获取屏幕大小
+        screen = QGuiApplication.primaryScreen().geometry()
 
         width = screen.width()  # 获取屏幕的宽
         height = screen.height()  # 获取屏幕的高
 
         logger.info(f"{width}x{height}")
 
-        self.ui.main.setGeometry(0,0,width,height)
+        self.ui.main.setFixedSize(1920, 1080)
 
         # self.show()
 
@@ -75,7 +75,7 @@ class DYMJWindow(WindowBase):
 
     def set_part_rule_menu(self):
         self.ui.partRule.setEditTriggers(
-             QAbstractItemView.EditTrigger.SelectedClicked
+            QAbstractItemView.EditTrigger.SelectedClicked
             | QAbstractItemView.EditTrigger.EditKeyPressed
         )
         self.ui.partRule.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
@@ -105,7 +105,7 @@ class DYMJWindow(WindowBase):
         if not selected_items:
             return
         list_item = selected_items[0]
-        list_item.setFlags(list_item.flags()| Qt.ItemFlag.ItemIsEditable)
+        list_item.setFlags(list_item.flags() | Qt.ItemFlag.ItemIsEditable)
         # self.ui.partRule.openPersistentEditor(list_item)
         self.ui.partRule.editItem(list_item)
 
@@ -365,9 +365,7 @@ class DYMJWindow(WindowBase):
             self.start_generate_task(new_list[0])
             new_list.pop(0)
         elif not new_list and self.websocket_status:
-            self.start_generate_task(
-                {"nickname": "系统随机", "user_id": "0", "prompt": ""}
-            )
+            self.start_generate_task({"nickname": "系统随机", "user_id": "0", "prompt": ""})
             # self.set_next_generate_ui()
         # elif new_list and self.task_status:
         self.rank_list = new_list
