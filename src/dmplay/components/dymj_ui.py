@@ -12,8 +12,8 @@ from PySide6.QtCore import QCoreApplication, QMetaObject, QSize, Qt
 from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import (
     QHBoxLayout,
-    QLCDNumber,
     QLabel,
+    QLCDNumber,
     QLineEdit,
     QListWidget,
     QProgressBar,
@@ -33,7 +33,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName("Form")
         Form.resize(1920, 1080)
-        Form.setMinimumSize(QSize(1920, 1080))
+        Form.setMinimumSize(QSize(0, 0))
         self.verticalLayout_28 = QVBoxLayout(Form)
         self.verticalLayout_28.setSpacing(0)
         self.verticalLayout_28.setObjectName("verticalLayout_28")
