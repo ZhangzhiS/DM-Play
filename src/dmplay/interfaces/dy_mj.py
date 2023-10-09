@@ -1,6 +1,6 @@
 from loguru import logger
 from PySide6.QtCore import QEvent, QSize, Qt, QThreadPool, QTimer, Slot
-from PySide6.QtGui import QAction, QFont, QFontMetrics, QIcon, QPixmap
+from PySide6.QtGui import QAction, QFont, QFontMetrics, QGuiApplication, QIcon, QPixmap, QScreen
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QLabel,
@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 from dmplay.components.dymj_ui import Ui_Form
 from dmplay.components.msg_box import MessageBox
 from dmplay.components.rank_item import RankItem
-from dmplay.core.config import config
+from dmplay.core.config import config, save_config_to_json
 from dmplay.core.window_base import WindowBase
 from dmplay.core.windows_manager import window_manager
 from dmplay.utils.download_thread import DownloadThread
@@ -30,6 +30,11 @@ class DYMJWindow(WindowBase):
         self.ui.topBar.mousePressEvent = self.on_mouse_press
         self.ui.topBar.mouseMoveEvent = self.on_mouse_move
         window_manager.show_dymj.connect(self.custom_show)
+        screen = QGuiApplication.primaryScreen().geometry()  # 获取屏幕类并调用geometry()方法获取屏幕大小
+        width = screen.width()  # 获取屏幕的宽
+        height = screen.height()  # 获取屏幕的高
+
+        self.ui.main.setGeometry(0,0,width,height)
 
         # self.show()
 
@@ -63,9 +68,46 @@ class DYMJWindow(WindowBase):
         self.generate_progress = 0
         self.countdown_count = 0
         self.rule_width = 1
+        self.set_part_rule_menu()
+
+    def set_part_rule_menu(self):
+        self.ui.partRule.setEditTriggers(
+             QAbstractItemView.EditTrigger.SelectedClicked
+            | QAbstractItemView.EditTrigger.EditKeyPressed
+        )
+        self.ui.partRule.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
+        self.ui.partRule.itemChanged.connect(self.rule_on_change)
+
+        removeAction = QAction(
+            "删除",
+            self.ui.partRule,
+        )
+        removeAction.triggered.connect(self.remove_selected_item)
+        self.ui.partRule.addAction(removeAction)
+        editAction = QAction(
+            "编辑",
+            self.ui.partRule,
+        )
+        editAction.triggered.connect(self.edit_selected_item)
+        self.ui.partRule.addAction(editAction)
+
+    def rule_on_change(self, item):
+        logger.info(self.ui.partRule.row(item))
+        config.PART_RULE[self.ui.partRule.row(item)] = item.text()
+        item.setSelected(False)
+        save_config_to_json(config)
+
+    def edit_selected_item(self):
+        selected_items = self.ui.partRule.selectedItems()
+        if not selected_items:
+            return
+        list_item = selected_items[0]
+        list_item.setFlags(list_item.flags()| Qt.ItemFlag.ItemIsEditable)
+        # self.ui.partRule.openPersistentEditor(list_item)
+        self.ui.partRule.editItem(list_item)
 
     def event(self, event):
-        if event.type() == QEvent.Show:
+        if event.type() == QEvent.Type.Show:
             self.rule_width = self.ui.partRule.width()
             self.init_rule()
         return super().event(event)
@@ -78,62 +120,28 @@ class DYMJWindow(WindowBase):
             item, index = item, self.ui.partRule.row(item)
             self.ui.partRule.takeItem(index)
             del item
+            config.PART_RULE.pop(index)
+        save_config_to_json(config)
+        self.init_rule()
 
     def buile_rule_item(self, rule):
-        rule_label = QLabel()
-        rule_label.setText(rule)
-        rule_label.setWordWrap(True)
         font = QFont()
         font.setPixelSize(16)
-        rule_label.setFont(font)
-        s = QFontMetrics(rule_label.font())
-        item_line = (s.horizontalAdvance(rule_label.text())//self.rule_width)+1
-        item_height = (item_line+1)*s.height()
-        list_item = QListWidgetItem(self.ui.partRule)
-        list_item.setSizeHint(
-            QSize(
-                self.ui.partRule.width(),
-                item_height
-            )
-        )
+        list_item = QListWidgetItem(rule)
+        list_item.setFont(font)
 
         self.ui.partRule.addItem(list_item)
-        self.ui.partRule.setItemWidget(list_item, rule_label)
 
     def add_rule(self):
-        rule_label = QLabel()
-        rule_label.setText(self.ui.lineEdit.text())
-        rule_label.setWordWrap(True)
-        font = QFont()
-        font.setPixelSize(16)
-        rule_label.setFont(font)
-        list_item = QListWidgetItem(self.ui.partRule)
-        s = QFontMetrics(rule_label.font())
-        list_item.setSizeHint(
-                QSize(
-                    self.ui.partRule.width(),
-                    s.horizontalAdvance(rule_label.text())
-                    // self.rule_width
-                    * 20+20,
-                )
-            )
-        self.ui.partRule.addItem(list_item)
-        self.ui.partRule.setItemWidget(list_item, rule_label)
+        t = self.ui.lineEdit.text()
+        config.PART_RULE.append(t)
+        self.buile_rule_item(t)
         self.ui.lineEdit.clear()
+        save_config_to_json(config)
 
     def init_rule(self):
-        self.ui.partRule.setEditTriggers(
-            QAbstractItemView.EditTrigger.DoubleClicked
-            | QAbstractItemView.EditTrigger.SelectedClicked
-            | QAbstractItemView.EditTrigger.EditKeyPressed
-        )
-        self.ui.partRule.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
-        removeAction = QAction(
-            "Remove",
-            self.ui.partRule,
-        )
-        removeAction.triggered.connect(self.remove_selected_item)
-        self.ui.partRule.addAction(removeAction)
+        self.ui.partRule.clear()
+        config.PART_RULE = [i for i in config.PART_RULE if i]
         for rule in config.PART_RULE:
             if not rule:
                 continue
@@ -354,7 +362,9 @@ class DYMJWindow(WindowBase):
             self.start_generate_task(new_list[0])
             new_list.pop(0)
         elif not new_list and self.websocket_status:
-            self.start_generate_task({"nickname": "系统随机", "user_id": "0", "prompt": ""})
+            self.start_generate_task(
+                {"nickname": "系统随机", "user_id": "0", "prompt": ""}
+            )
             # self.set_next_generate_ui()
         # elif new_list and self.task_status:
         self.rank_list = new_list

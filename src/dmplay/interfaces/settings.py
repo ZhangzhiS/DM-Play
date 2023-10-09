@@ -44,5 +44,7 @@ class SettingsWindow(WindowBase):
             self.ui.imagePath.setText(selected_path)
 
     def save_config(self):
+        config.DOWNLOAD_PATH = self.ui.imagePath.text()
+        config.LIVE_URL_ID = self.ui.dyUrlId.text()
         save_config_to_json(config)
         self.close()

@@ -8,17 +8,8 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (
-    QCoreApplication,
-    QMetaObject,
-    QRect,
-    QSize,
-    Qt,
-)
-from PySide6.QtGui import (
-    QFont,
-    QIcon,
-)
+from PySide6.QtCore import QCoreApplication, QMetaObject, QSize, Qt
+from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLCDNumber,
@@ -33,6 +24,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
 from dmplay.resources import pc_rc  # noqa
 
 
@@ -40,16 +32,17 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName("Form")
-        Form.resize(1459, 893)
+        Form.resize(1920, 1080)
+        Form.setMinimumSize(QSize(1920, 1080))
+        self.verticalLayout_28 = QVBoxLayout(Form)
+        self.verticalLayout_28.setSpacing(0)
+        self.verticalLayout_28.setObjectName("verticalLayout_28")
+        self.verticalLayout_28.setContentsMargins(0, 0, 0, 0)
         self.main = QWidget(Form)
         self.main.setObjectName("main")
-        self.main.setGeometry(QRect(12, 12, 1441, 868))
-        self.main.setMinimumSize(QSize(1243, 868))
+        self.main.setMinimumSize(QSize(0, 0))
         self.main.setStyleSheet(
-            "#main{\n"
-            "	background-color: rgb(255, 255, 255);\n"
-            "	border-radius: 20px;\n"
-            "}"
+            "#main{\n" "	background-color: rgb(255, 255, 255);\n" "\n" "}"
         )
         self.verticalLayout_2 = QVBoxLayout(self.main)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -63,8 +56,6 @@ class Ui_Form(object):
         self.topBar.setStyleSheet(
             "#topBar{\n"
             "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 197, 203, 255), stop:1 rgba(57, 232, 156, 255));\n"
-            "border-top-left-radius: 20px;\n"
-            "border-top-right-radius: 20px;\n"
             "}"
         )
         self.horizontalLayout_3 = QHBoxLayout(self.topBar)
@@ -235,11 +226,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.container.sizePolicy().hasHeightForWidth())
         self.container.setSizePolicy(sizePolicy)
-        self.container.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n"
-            "border-bottom-left-radius: 20px;\n"
-            "border-bottom-right-radius: 20px;"
-        )
+        self.container.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.verticalLayout_3 = QVBoxLayout(self.container)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.verticalLayout_4 = QVBoxLayout()
@@ -692,10 +679,7 @@ class Ui_Form(object):
         self.footBar.setMinimumSize(QSize(0, 50))
         self.footBar.setMaximumSize(QSize(16777215, 50))
         self.footBar.setStyleSheet(
-            "#footBar{\n"
-            "background-color: rgb(214, 214, 214);\n"
-            "border-radius: 20px;\n"
-            "}"
+            "#footBar{\n" "background-color: rgb(214, 214, 214);\n" "}"
         )
         self.horizontalLayout_14 = QHBoxLayout(self.footBar)
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
@@ -714,6 +698,10 @@ class Ui_Form(object):
 
         self.inputPrompt = QLabel(self.footBar)
         self.inputPrompt.setObjectName("inputPrompt")
+        font2 = QFont()
+        font2.setPointSize(25)
+        font2.setBold(True)
+        self.inputPrompt.setFont(font2)
         self.inputPrompt.setStyleSheet(
             "\n"
             "#inputPrompt{\n"
@@ -722,7 +710,7 @@ class Ui_Form(object):
             "}"
         )
 
-        self.horizontalLayout_13.addWidget(self.inputPrompt)
+        self.horizontalLayout_13.addWidget(self.inputPrompt, 0, Qt.AlignHCenter)
 
         self.horizontalSpacer_2 = QSpacerItem(
             40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum
@@ -741,6 +729,8 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.container)
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
+
+        self.verticalLayout_28.addWidget(self.main)
 
         self.retranslateUi(Form)
 
