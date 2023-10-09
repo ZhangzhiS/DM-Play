@@ -355,7 +355,7 @@ class Ui_Home(object):
         self.label_5.setText(
             QCoreApplication.translate("Home", "\u76f4\u64ad\u95f4ID\uff1a", None)
         )
-        self.urlID.setText(QCoreApplication.translate("Home", "11111111111", None))
+        self.urlID.setText(QCoreApplication.translate("Home", "", None))
         self.editUrlIDBtn.setText(QCoreApplication.translate("Home", "...", None))
         self.logOutButton.setText("")
         self.settingsButton.setText("")

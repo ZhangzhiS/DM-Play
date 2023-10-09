@@ -232,7 +232,7 @@ background-color:  transparent;
 }</string>
                         </property>
                         <property name="text">
-                         <string>11111111111</string>
+                         <string/>
                         </property>
                        </widget>
                       </item>

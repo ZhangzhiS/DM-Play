@@ -50,6 +50,7 @@ class HomeWindow(WindowBase):
         config.LIVE_URL_ID = text
 
     def edit_dymj_id_button(self):
+        logger.info(self.edit_status)
         self.ui.urlID.setEnabled(self.edit_status)
         icon = QIcon()
         icon_str = "create-outline" if not self.edit_status else "checkmark-outline"
@@ -63,6 +64,9 @@ class HomeWindow(WindowBase):
             border-right: none;
             background-color: {background_color};
         """)
+        if self.edit_status is False:
+            config.LIVE_URL_ID = self.ui.urlID.text()
+            save_config_to_json(config)
 
     def open_dy_mj(self):
         "open_dy_mj"
