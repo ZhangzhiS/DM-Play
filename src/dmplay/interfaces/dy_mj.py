@@ -30,14 +30,8 @@ class DYMJWindow(WindowBase):
         self.ui.topBar.mousePressEvent = self.on_mouse_press
         self.ui.topBar.mouseMoveEvent = self.on_mouse_move
         window_manager.show_dymj.connect(self.custom_show)
-        screen = QGuiApplication.primaryScreen().geometry()
 
-        width = screen.width()  # 获取屏幕的宽
-        height = screen.height()  # 获取屏幕的高
-
-        logger.info(f"{width}x{height}")
-
-        self.ui.main.setFixedSize(1920, 1080)
+        self.ui.main.setGeometry(0,0, 1920, 1080)
 
         # self.show()
 

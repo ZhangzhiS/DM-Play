@@ -26,8 +26,6 @@ class HomeWindow(WindowBase):
         self.ui.userInfo.mousePressEvent = self.on_mouse_press
         self.ui.userInfo.mouseMoveEvent = self.on_mouse_move
 
-        if config.LIVE_URL_ID:
-            self.ui.urlID.setText(config.LIVE_URL_ID)
 
         self.ui.urlID.textChanged.connect(self.edit_dymj_id_event)
         window_manager.show_home.connect(self.customShow)
@@ -40,6 +38,8 @@ class HomeWindow(WindowBase):
     @Slot()
     def customShow(self):
         logger.info("show home")
+        if config.LIVE_URL_ID:
+            self.ui.urlID.setText(config.LIVE_URL_ID)
         self.show()
 
     def customClose(self):
