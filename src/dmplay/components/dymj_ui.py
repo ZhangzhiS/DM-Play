@@ -613,6 +613,7 @@ class Ui_Form(object):
 
         self.historyList = QListWidget(self.generateHistory)
         self.historyList.setObjectName("historyList")
+        self.historyList.setStyleSheet("#historyList{\n" "border: none;\n" "}")
 
         self.verticalLayout_20.addWidget(self.historyList)
 
@@ -655,6 +656,8 @@ class Ui_Form(object):
             "            background-color: white;\n"
             "            border-radius: 6px;\n"
             "}"
+            "#rankScoreList{border: none;}"
+            
         )
 
         self.verticalLayout_19.addWidget(self.rankScoreList)

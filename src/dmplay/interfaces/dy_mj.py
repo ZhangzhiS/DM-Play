@@ -370,9 +370,10 @@ class DYMJWindow(WindowBase):
                 nickname=item.get("nickname"),
                 score=item.get("rank_score"),
                 prompt=item.get("prompt"),
+                parent=self.ui.rankScoreList
             )
             list_item = QListWidgetItem(self.ui.rankScoreList)
-            list_item.setSizeHint(rend_item.sizeHint())
+            # list_item.setSizeHint(rend_item.sizeHint())
             self.ui.rankScoreList.addItem(list_item)
             self.ui.rankScoreList.setItemWidget(list_item, rend_item)
 
