@@ -338,7 +338,8 @@ class DYMJWindow(WindowBase):
         label.setScaledContents(True)
         history_item = QListWidgetItem(self.ui.historyList)
         history_item.setSizeHint(QSize(width, width))
-        self.ui.historyList.addItem(history_item)
+        # self.ui.historyList.addItem(history_item)
+        self.ui.historyList.insertItem(0, history_item)
         self.ui.historyList.setItemWidget(history_item, label)
 
     def tips_countdown(self):

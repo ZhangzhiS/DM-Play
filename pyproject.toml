@@ -2,7 +2,7 @@
 [tool.briefcase]
 project_name = "DMPlay"
 bundle = "com.example"
-version = "0.0.4"
+version = "0.0.5"
 url = "https://example.com/dmplay"
 license = "Other"
 author = "zhangzhi"
