@@ -7,8 +7,8 @@ from loguru import logger
 from dmplay.core.config import config
 
 
-BACKEND_DOMAIN = "hello.zzs7.top"
-# BACKEND_DOMAIN = "127.0.0.1:8081"
+# BACKEND_DOMAIN = "hello.zzs7.top"
+BACKEND_DOMAIN = "127.0.0.1:8081"
 
 
 class WebSocketWorderSignals(QObject):

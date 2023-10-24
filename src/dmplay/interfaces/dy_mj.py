@@ -1,6 +1,6 @@
 from loguru import logger
 from PySide6.QtCore import QEvent, QSize, Qt, QThreadPool, QTimer, Slot
-from PySide6.QtGui import QAction, QFont, QGuiApplication, QIcon, QPixmap
+from PySide6.QtGui import QAction, QFont, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QLabel,
@@ -31,7 +31,7 @@ class DYMJWindow(WindowBase):
         self.ui.topBar.mouseMoveEvent = self.on_mouse_move
         window_manager.show_dymj.connect(self.custom_show)
 
-        self.ui.main.setGeometry(0,0, 1920, 1080)
+        self.ui.main.setGeometry(0, 0, 1920, 1080)
 
         # self.show()
 
@@ -298,6 +298,10 @@ class DYMJWindow(WindowBase):
             self.ui.progressBar.setFormat("已完成")
             self.countdown_count = 60
             self.tips_timer.start(1000)
+        elif data.get("status") == -1:
+            self.task_timer.stop()
+            self.ui.progressBar.setFormat("生成错误")
+            self.start_generate_task(self.rank_list[0])
 
     @Slot(bytes)
     def render_preview_img(self, content: bytes):
@@ -359,9 +363,13 @@ class DYMJWindow(WindowBase):
             self.start_generate_task(new_list[0])
             new_list.pop(0)
         elif not new_list and self.websocket_status:
-            self.start_generate_task({"nickname": "系统随机", "user_id": "0", "prompt": ""})
-            # self.set_next_generate_ui()
-        # elif new_list and self.task_status:
+            self.start_generate_task(
+                {
+                    "nickname": "系统随机",
+                    "user_id": "0",
+                    "prompt": ""
+                }
+            )
         self.rank_list = new_list
         self.set_next_generate_ui()
         self.ui.rankScoreList.clear()
@@ -370,7 +378,9 @@ class DYMJWindow(WindowBase):
                 nickname=item.get("nickname"),
                 score=item.get("rank_score"),
                 prompt=item.get("prompt"),
-                parent=self.ui.rankScoreList
+                thread_pool=self.threadpool,
+                avatar_url=item.get("avatar_url"),
+                parent=self.ui.rankScoreList,
             )
             list_item = QListWidgetItem(self.ui.rankScoreList)
             # list_item.setSizeHint(rend_item.sizeHint())

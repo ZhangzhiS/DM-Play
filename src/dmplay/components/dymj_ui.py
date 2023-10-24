@@ -78,7 +78,7 @@ class Ui_Form(object):
         self.avaImg.setMaximumSize(QSize(30, 30))
         self.avaImg.setStyleSheet(
             "#avaImg {\n"
-            "	border-image: url(:/images/images/ava.jpg);\n"
+            "	border-image: url(:/icons/icons/midjourney.png);\n"
             "             border-radius: 10px;\n"
             "}"
         )

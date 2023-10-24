@@ -1,6 +1,7 @@
 from typing import Optional
 
-from PySide6.QtCore import QMetaObject, QSize, Qt
+from PySide6.QtCore import QMetaObject, QSize, QThreadPool, Qt, Slot
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QCheckBox,
     QHBoxLayout,
@@ -9,6 +10,10 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from dmplay.utils.download_thread import DownloadThread
+
+t = "http://p3-webcast.douyinpic.com/img/webcast/mystery_man_thumb_avatar.png~tplv-obj.image"
+
 
 class RankItem(QWidget):
     def __init__(
@@ -16,6 +21,8 @@ class RankItem(QWidget):
         nickname: str,
         score: int,
         prompt: Optional[str],
+        thread_pool: QThreadPool,
+        avatar_url: Optional[str] = None,
         parent: Optional[QWidget] = None,
     ) -> None:
         super().__init__(parent)
@@ -43,8 +50,13 @@ class RankItem(QWidget):
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.avatar = QLabel(self.widget)
         self.avatar.setObjectName("avatar")
-        self.avatar.setMinimumSize(QSize(40, 40))
-        self.avatar.setStyleSheet("image: url(:/images/images/ava.jpg);")
+        # self.avatar.setMinimumSize(QSize(40, 40))
+        # self.avatar.setStyleSheet("image: url(:/images/images/ava.jpg);")
+        render_avatar = DownloadThread(
+            avatar_url if avatar_url is not None else t, status=-1, name=""
+        )
+        render_avatar.signal.finished.connect(self.set_avatar)
+        thread_pool.start(render_avatar)
 
         self.horizontalLayout_9.addWidget(self.avatar)
 
@@ -143,3 +155,17 @@ class RankItem(QWidget):
         self.nickname.setText(nickname)
         self.score.setText(str(score))
         self.has_prompt.setText("")
+        if prompt:
+            self.has_prompt.setChecked(True)
+
+    @Slot(bytes)
+    def set_avatar(self, content):
+        image = QPixmap()
+        image.loadFromData(content)
+        image.scaled(
+            QSize(30, 30),
+            # Qt.AspectRatioMode.KeepAspectRatio,
+        )
+        self.avatar.setScaledContents(True)
+        self.avatar.setPixmap(image)
+        self.avatar.setAlignment(Qt.AlignmentFlag.AlignCenter)
